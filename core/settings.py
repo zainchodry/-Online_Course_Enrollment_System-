@@ -42,6 +42,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
     'accounts',
 
 ]
