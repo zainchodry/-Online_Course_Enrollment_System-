@@ -10,8 +10,12 @@ from .permissions import IsInstructorOrReadOnly, IsCourseOwnerOrReadOnly
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # Only Admin can create categories, anyone can read
-    permission_classes = [permissions.IsAdminUser|permissions.IsAuthenticatedOrReadOnly]
+
+    def get_permissions(self):
+        """Only Admin can create/update/delete categories; anyone can read."""
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
 
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [IsInstructorOrReadOnly, IsCourseOwnerOrReadOnly]

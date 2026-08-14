@@ -44,7 +44,9 @@ PROJECT_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'accounts',
-
+    'courses',
+    'enrollments',
+    'reviews',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -127,12 +129,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 MEDIA_URL ="/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-MEDIAFILES_DIRS = [
-    BASE_DIR / "media",
-]
+
 
 AUTH_USER_MODEL = 'accounts.User'
 # Default primary key field type

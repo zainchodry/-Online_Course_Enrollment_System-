@@ -17,24 +17,22 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A user with this email already exists.")
         return value
 
-    def validate_password(self, attrs):
+    def validate(self, attrs):
         password = attrs.get('password')
         confirm_password = attrs.get('confirm_password')
-        if password != confirm_password:
-            raise serializers.ValidationError("Passwords do not match.")
-        if len(password) < 8 and len(confirm_password) < 8:
-            raise serializers.ValidationError("Password must be at least 8 characters long.")
-        return attrs
 
-    def validate_name(self, attrs):
+        if password != confirm_password:
+            raise serializers.ValidationError({"password": "Passwords do not match."})
+
         first_name = attrs.get('first_name')
         last_name = attrs.get('last_name')
 
         if not first_name or not last_name:
             raise serializers.ValidationError("First name and last name are required.")
-        
-        if first_name[0].isalpha() and last_name[0].isalpha():
-            raise serializers.ValidationError("First name and last name must start with alphabet letter.")
+
+        if not first_name[0].isalpha() or not last_name[0].isalpha():
+            raise serializers.ValidationError("First name and last name must start with an alphabet letter.")
+
         return attrs
 
     def create(self, validated_data):
@@ -106,6 +104,6 @@ class SetNewPasswordSerializer(serializers.Serializer):
 
             user.set_password(password)
             user.save()
-            return user
+            return attrs
         except Exception:
             raise AuthenticationFailed('The reset link is invalid or has expired.', 401)
